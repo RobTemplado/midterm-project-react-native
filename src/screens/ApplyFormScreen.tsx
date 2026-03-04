@@ -64,7 +64,7 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerBlock}>
+        <View style={[styles.headerCard, isDarkMode && styles.headerCardDark]}>
           <Text style={[styles.title, isDarkMode && styles.textLight]}>
             Apply for {job.job_title}
           </Text>
@@ -76,9 +76,9 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
           </Text>
         </View>
 
-        <View style={[styles.divider, isDarkMode && styles.dividerDark]} />
-
-        <View style={styles.sectionBlock}>
+        <View
+          style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
+        >
           <Text style={[styles.sectionTitle, isDarkMode && styles.textLight]}>
             Your details
           </Text>
@@ -123,9 +123,9 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
           </View>
         </View>
 
-        <View style={[styles.divider, isDarkMode && styles.dividerDark]} />
-
-        <View style={styles.sectionBlock}>
+        <View
+          style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
+        >
           <Text style={[styles.sectionTitle, isDarkMode && styles.textLight]}>
             Why should we hire you?
           </Text>
@@ -167,23 +167,42 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#eef2f6" },
-  containerDark: { backgroundColor: "#0f172a" },
+  container: { flex: 1, backgroundColor: "#f1f5f9" },
+  containerDark: { backgroundColor: "#0b1120" },
   scrollContent: {
     flexGrow: 1,
-    paddingTop: 8,
-    paddingHorizontal: 18,
+    paddingTop: 12,
+    paddingHorizontal: 16,
     paddingBottom: 110,
   },
-  headerBlock: { marginBottom: 16 },
+  headerCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    marginBottom: 14,
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 2,
+  },
+  headerCardDark: { backgroundColor: "#0f172a", borderColor: "#1f2937" },
   title: { fontSize: 30, fontWeight: "700", color: "#0f172a" },
   company: { marginTop: 6, color: "#334155", fontWeight: "600", fontSize: 18 },
   subLine: { marginTop: 6, color: "#64748b", fontSize: 16 },
-  divider: { height: 1, backgroundColor: "#e2e8f0", marginVertical: 12 },
-  dividerDark: { backgroundColor: "#1f2937" },
-  sectionBlock: { marginTop: 14 },
-  sectionTitle: { fontSize: 19, fontWeight: "700" },
-  sectionBody: { marginTop: 6, color: "#475569", lineHeight: 24, fontSize: 16 },
+  sectionCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    marginBottom: 12,
+  },
+  sectionCardDark: { backgroundColor: "#0f172a", borderColor: "#1f2937" },
+  sectionTitle: { fontSize: 18, fontWeight: "700" },
+  sectionBody: { marginTop: 8, color: "#475569", lineHeight: 24, fontSize: 15 },
   fieldGroup: { marginTop: 12 },
   label: { color: "#475569", fontWeight: "600", marginBottom: 6 },
   input: {
@@ -218,6 +237,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 18,
     borderRadius: 999,
+    backgroundColor: "#ffffff",
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 2,
   },
   secondaryText: { color: "#0f766e", fontWeight: "700", fontSize: 17 },
   primaryBtn: {
@@ -225,6 +250,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 999,
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 3,
   },
   primaryText: { color: "#ffffff", fontWeight: "700", fontSize: 17 },
   textLight: { color: "#e2e8f0" },

@@ -251,10 +251,23 @@ export default function JobFinderScreen({ navigation }: any) {
           <TouchableOpacity
             onPress={() => saveJob(item)}
             disabled={saved}
-            style={[styles.actionBtn, saved && styles.actionBtnDisabled]}
+            style={[
+              styles.actionBtn,
+              isDarkMode && styles.actionBtnDark,
+              saved && styles.actionBtnDisabled,
+            ]}
           >
+            <Ionicons
+              name={saved ? "bookmark" : "bookmark-outline"}
+              size={16}
+              color={saved ? "#94a3b8" : isDarkMode ? "#e2e8f0" : "#0f172a"}
+            />
             <Text
-              style={[styles.actionText, saved && styles.actionTextDisabled]}
+              style={[
+                styles.actionText,
+                isDarkMode && styles.actionTextDark,
+                saved && styles.actionTextDisabled,
+              ]}
             >
               {saved ? "Saved" : "Save"}
             </Text>
@@ -263,8 +276,9 @@ export default function JobFinderScreen({ navigation }: any) {
             onPress={() =>
               navigation.navigate("Apply", { job: item, fromSaved: false })
             }
-            style={styles.primaryBtn}
+            style={[styles.primaryBtn, isDarkMode && styles.primaryBtnDark]}
           >
+            <Ionicons name="send" size={16} color="#ffffff" />
             <Text style={styles.primaryText}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -463,6 +477,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#0ea5e9",
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    elevation: 2,
   },
   searchBtnDark: { backgroundColor: "#38bdf8" },
   clearBtn: {
@@ -472,6 +491,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#e2e8f0",
+    borderWidth: 1,
+    borderColor: "#cbd5f5",
   },
   clearBtnDark: { backgroundColor: "#1f2937" },
   clearText: { color: "#0f172a", fontWeight: "700" },
@@ -532,21 +553,41 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   actionBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     borderWidth: 1,
-    borderColor: "#14b8a6",
+    borderColor: "#cbd5f5",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 999,
+    backgroundColor: "#ffffff",
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 1,
   },
+  actionBtnDark: { backgroundColor: "#0b1220", borderColor: "#334155" },
   actionBtnDisabled: { borderColor: "#94a3b8" },
-  actionText: { color: "#0f766e", fontWeight: "700" },
+  actionText: { color: "#0f172a", fontWeight: "700" },
+  actionTextDark: { color: "#e2e8f0" },
   actionTextDisabled: { color: "#94a3b8" },
   primaryBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     backgroundColor: "#0ea5e9",
     paddingVertical: 8,
     paddingHorizontal: 18,
     borderRadius: 999,
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 2,
   },
+  primaryBtnDark: { backgroundColor: "#38bdf8" },
   primaryText: { color: "#ffffff", fontWeight: "700" },
   emptyContainer: { flexGrow: 1, justifyContent: "center" },
   emptyText: { textAlign: "center", color: "#94a3b8" },

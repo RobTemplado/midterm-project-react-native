@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -19,6 +19,9 @@ const JobDetailsScreen = ({ route, navigation }: any) => {
   const { saveJob, savedJobs, isDarkMode } = useJobs();
 
   const revealAnim = useRef(new Animated.Value(0)).current;
+  const [activeSection, setActiveSection] = useState<
+    "Skills" | "Description" | "Requirements" | "Benefits"
+  >("Description");
 
   const isSaved = savedJobs.some((saved) => saved.id === job.id);
   const salaryText =
@@ -198,82 +201,107 @@ const JobDetailsScreen = ({ route, navigation }: any) => {
                   </Text>
                 </View>
               </View>
+            </View>
 
-              {job.tags && job.tags.length > 0 ? (
-                <>
-                  <View
-                    style={[
-                      styles.sectionDivider,
-                      isDarkMode && styles.sectionDividerDark,
-                    ]}
-                  />
-                  <View>
-                    <Text
+            <View style={styles.tabRow}>
+              {["Skills", "Description", "Requirements", "Benefits"].map(
+                (label) => {
+                  const isActive = activeSection === label;
+                  return (
+                    <TouchableOpacity
+                      key={label}
+                      onPress={() =>
+                        setActiveSection(
+                          label as
+                            | "Skills"
+                            | "Description"
+                            | "Requirements"
+                            | "Benefits",
+                        )
+                      }
                       style={[
-                        styles.sectionTitle,
-                        isDarkMode && styles.textLight,
+                        styles.tabBtn,
+                        isActive && styles.tabBtnActive,
+                        isDarkMode && styles.tabBtnDark,
+                        isActive && isDarkMode && styles.tabBtnActiveDark,
                       ]}
                     >
-                      Skills
-                    </Text>
-                    <View style={styles.tagsWrap}>
-                      {job.tags.slice(0, 6).map((tag) => (
-                        <Text
-                          key={tag}
-                          style={[styles.tag, isDarkMode && styles.tagDark]}
-                        >
-                          {tag}
-                        </Text>
-                      ))}
-                    </View>
+                      <Text
+                        style={[
+                          styles.tabText,
+                          isActive && styles.tabTextActive,
+                          isDarkMode && styles.textLight,
+                        ]}
+                      >
+                        {label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                },
+              )}
+            </View>
+
+            <View
+              style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
+            >
+              <Text
+                style={[styles.sectionTitle, isDarkMode && styles.textLight]}
+              >
+                {activeSection}
+              </Text>
+              {activeSection === "Skills" ? (
+                job.tags && job.tags.length > 0 ? (
+                  <View style={styles.tagsWrap}>
+                    {job.tags.slice(0, 10).map((tag) => (
+                      <Text
+                        key={tag}
+                        style={[styles.tag, isDarkMode && styles.tagDark]}
+                      >
+                        {tag}
+                      </Text>
+                    ))}
                   </View>
-                </>
+                ) : (
+                  <Text
+                    style={[
+                      styles.sectionBody,
+                      isDarkMode && styles.textMutedDark,
+                    ]}
+                  >
+                    No skills listed.
+                  </Text>
+                )
               ) : null}
-            </View>
-
-            <View
-              style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
-            >
-              <Text
-                style={[styles.sectionTitle, isDarkMode && styles.textLight]}
-              >
-                Description
-              </Text>
-              <Text
-                style={[styles.sectionBody, isDarkMode && styles.textMutedDark]}
-              >
-                {descriptionText}
-              </Text>
-            </View>
-
-            <View
-              style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
-            >
-              <Text
-                style={[styles.sectionTitle, isDarkMode && styles.textLight]}
-              >
-                Requirements
-              </Text>
-              <Text
-                style={[styles.sectionBody, isDarkMode && styles.textMutedDark]}
-              >
-                {requirementsText}
-              </Text>
-            </View>
-
-            <View
-              style={[styles.sectionCard, isDarkMode && styles.sectionCardDark]}
-            >
-              <Text
-                style={[styles.sectionTitle, isDarkMode && styles.textLight]}
-              >
-                Benefits
-              </Text>
-              <Text
-                style={[styles.sectionBody, isDarkMode && styles.textMutedDark]}
-              >
-                {benefitsText}
-              </Text>
+              {activeSection === "Description" ? (
+                <Text
+                  style={[
+                    styles.sectionBody,
+                    isDarkMode && styles.textMutedDark,
+                  ]}
+                >
+                  {descriptionText}
+                </Text>
+              ) : null}
+              {activeSection === "Requirements" ? (
+                <Text
+                  style={[
+                    styles.sectionBody,
+                    isDarkMode && styles.textMutedDark,
+                  ]}
+                >
+                  {requirementsText}
+                </Text>
+              ) : null}
+              {activeSection === "Benefits" ? (
+                <Text
+                  style={[
+                    styles.sectionBody,
+                    isDarkMode && styles.textMutedDark,
+                  ]}
+                >
+                  {benefitsText}
+                </Text>
+              ) : null}
             </View>
 
             {job.application_link ? (
@@ -286,13 +314,18 @@ const JobDetailsScreen = ({ route, navigation }: any) => {
       </Animated.View>
       <View style={[styles.stickyBar, isDarkMode && styles.stickyBarDark]}>
         <TouchableOpacity
-          style={[styles.secondaryBtn, isSaved && styles.secondaryBtnDisabled]}
+          style={[
+            styles.secondaryBtn,
+            isDarkMode && styles.secondaryBtnDark,
+            isSaved && styles.secondaryBtnDisabled,
+          ]}
           onPress={() => saveJob(job)}
           disabled={isSaved}
         >
           <Text
             style={[
               styles.secondaryText,
+              isDarkMode && styles.secondaryTextDark,
               isSaved && styles.secondaryTextDisabled,
             ]}
           >
@@ -300,7 +333,7 @@ const JobDetailsScreen = ({ route, navigation }: any) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.primaryBtn}
+          style={[styles.primaryBtn, isDarkMode && styles.primaryBtnDark]}
           onPress={() =>
             navigation.navigate("Apply", { job, fromSaved: false })
           }
@@ -365,6 +398,42 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionCardDark: { backgroundColor: "#0f172a", borderColor: "#1f2937" },
+  tabRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 12,
+  },
+  tabBtn: {
+    flexBasis: "48%",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#cbd5f5",
+    backgroundColor: "#eef2ff",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 1,
+  },
+  tabBtnDark: {
+    borderColor: "#334155",
+    backgroundColor: "#0b1220",
+  },
+  tabBtnActive: {
+    borderColor: "#0ea5e9",
+    backgroundColor: "#0ea5e9",
+  },
+  tabBtnActiveDark: {
+    borderColor: "#38bdf8",
+    backgroundColor: "#38bdf8",
+  },
+  tabText: { fontSize: 13, fontWeight: "700", color: "#1e293b" },
+  tabTextActive: { color: "#ffffff" },
   sectionTitle: { fontSize: 18, fontWeight: "700" },
   sectionBody: { marginTop: 8, color: "#475569", lineHeight: 24, fontSize: 15 },
   detailList: { gap: 6 },
@@ -406,20 +475,34 @@ const styles = StyleSheet.create({
   stickyBarDark: { backgroundColor: "#0b1220", borderTopColor: "#1f2937" },
   secondaryBtn: {
     borderWidth: 1,
-    borderColor: "#14b8a6",
+    borderColor: "#cbd5f5",
     paddingVertical: 12,
     paddingHorizontal: 18,
     borderRadius: 999,
+    backgroundColor: "#ffffff",
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 2,
   },
+  secondaryBtnDark: { backgroundColor: "#0b1220", borderColor: "#334155" },
   secondaryBtnDisabled: { borderColor: "#94a3b8" },
-  secondaryText: { color: "#0f766e", fontWeight: "700", fontSize: 17 },
+  secondaryText: { color: "#0f172a", fontWeight: "700", fontSize: 17 },
+  secondaryTextDark: { color: "#e2e8f0" },
   secondaryTextDisabled: { color: "#94a3b8" },
   primaryBtn: {
     backgroundColor: "#0ea5e9",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 999,
+    shadowColor: "#0f172a",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 3,
   },
+  primaryBtnDark: { backgroundColor: "#38bdf8" },
   primaryText: { color: "#ffffff", fontWeight: "700", fontSize: 17 },
   linkBtn: {
     marginTop: 12,
