@@ -5,7 +5,6 @@ import {
   Image,
   Keyboard,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -131,7 +130,7 @@ const getInitials = (name: string) =>
     .join("");
 
 export default function JobFinderScreen({ navigation }: any) {
-  const { saveJob, savedJobs, isDarkMode, toggleTheme } = useJobs();
+  const { toggleSaveJob, savedJobs, isDarkMode, toggleTheme } = useJobs();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -249,25 +248,16 @@ export default function JobFinderScreen({ navigation }: any) {
         </Text>
         <View style={styles.row}>
           <TouchableOpacity
-            onPress={() => saveJob(item)}
-            disabled={saved}
-            style={[
-              styles.actionBtn,
-              isDarkMode && styles.actionBtnDark,
-              saved && styles.actionBtnDisabled,
-            ]}
+            onPress={() => toggleSaveJob(item)}
+            style={[styles.actionBtn, isDarkMode && styles.actionBtnDark]}
           >
             <Ionicons
               name={saved ? "bookmark" : "bookmark-outline"}
               size={16}
-              color={saved ? "#94a3b8" : isDarkMode ? "#e2e8f0" : "#0f172a"}
+              color={saved ? "#0ea5e9" : isDarkMode ? "#e2e8f0" : "#0f172a"}
             />
             <Text
-              style={[
-                styles.actionText,
-                isDarkMode && styles.actionTextDark,
-                saved && styles.actionTextDisabled,
-              ]}
+              style={[styles.actionText, isDarkMode && styles.actionTextDark]}
             >
               {saved ? "Saved" : "Save"}
             </Text>
@@ -309,10 +299,18 @@ export default function JobFinderScreen({ navigation }: any) {
             ) : null}
           </View>
           <View style={styles.toggleRow}>
-            <Text style={[styles.toggleLabel, isDarkMode && styles.textLight]}>
-              {isDarkMode ? "Dark" : "Light"}
-            </Text>
-            <Switch value={isDarkMode} onValueChange={toggleTheme} />
+            <TouchableOpacity
+              style={[styles.themeToggle, isDarkMode && styles.themeToggleDark]}
+              onPress={toggleTheme}
+              accessibilityRole="button"
+              accessibilityLabel="Toggle theme"
+            >
+              <Ionicons
+                name={isDarkMode ? "moon" : "sunny"}
+                size={18}
+                color={isDarkMode ? "#facc15" : "#0f172a"}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -439,7 +437,17 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   toggleRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  toggleLabel: { fontSize: 14, color: "#0f172a", fontWeight: "600" },
+  themeToggle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#cbd5f5",
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  themeToggleDark: { backgroundColor: "#0b1220", borderColor: "#334155" },
   searchWrap: {
     backgroundColor: "#ffffff",
     borderRadius: 22,

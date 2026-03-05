@@ -9,6 +9,8 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { CommonActions } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 import { useJobs } from "../context/JobContext";
 
 const ApplyFormScreen = ({ route, navigation }: any) => {
@@ -43,13 +45,12 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
         text: "Okay",
         onPress: () => {
           setForm({ name: "", email: "", phone: "", reason: "" });
-
-          if (fromSaved) {
-            navigation.navigate("Main", { screen: "Home" });
-            return;
-          }
-
-          navigation.goBack();
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Main", params: { screen: "Home" } }],
+            }),
+          );
         },
       },
     ]);
@@ -89,7 +90,7 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
             <TextInput
               style={[styles.input, isDarkMode && styles.inputDark]}
               placeholder="Jose Rizz Al"
-              placeholderTextColor={isDarkMode ? "#64748b" : "#94a3b8"}
+              placeholderTextColor={isDarkMode ? "#9ca3af" : "#6b7280"}
               value={form.name}
               onChangeText={(t) => setForm({ ...form, name: t })}
             />
@@ -101,7 +102,7 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
             <TextInput
               style={[styles.input, isDarkMode && styles.inputDark]}
               placeholder="laonglaan@email.com"
-              placeholderTextColor={isDarkMode ? "#64748b" : "#94a3b8"}
+              placeholderTextColor={isDarkMode ? "#9ca3af" : "#6b7280"}
               value={form.email}
               onChangeText={(t) => setForm({ ...form, email: t })}
               keyboardType="email-address"
@@ -115,7 +116,7 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
             <TextInput
               style={[styles.input, isDarkMode && styles.inputDark]}
               placeholder="+63 123-456-7890"
-              placeholderTextColor={isDarkMode ? "#64748b" : "#94a3b8"}
+              placeholderTextColor={isDarkMode ? "#9ca3af" : "#6b7280"}
               value={form.phone}
               onChangeText={(t) => setForm({ ...form, phone: t })}
               keyboardType="phone-pad"
@@ -143,7 +144,7 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
               isDarkMode && styles.inputDark,
             ]}
             placeholder="Write your message"
-            placeholderTextColor={isDarkMode ? "#64748b" : "#94a3b8"}
+            placeholderTextColor={isDarkMode ? "#9ca3af" : "#6b7280"}
             multiline
             value={form.reason}
             onChangeText={(t) => setForm({ ...form, reason: t })}
@@ -156,7 +157,19 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
           onPress={() => navigation.goBack()}
           style={styles.secondaryBtn}
         >
-          <Text style={styles.secondaryText}>Back</Text>
+          <Ionicons
+            name="arrow-back"
+            size={16}
+            color={isDarkMode ? "#d1d5db" : "#374151"}
+          />
+          <Text
+            style={[
+              styles.secondaryText,
+              isDarkMode && styles.secondaryTextDark,
+            ]}
+          >
+            Back
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.primaryBtn} onPress={handleConfirm}>
           <Text style={styles.primaryText}>Submit</Text>
@@ -167,8 +180,8 @@ const ApplyFormScreen = ({ route, navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f1f5f9" },
-  containerDark: { backgroundColor: "#0b1120" },
+  container: { flex: 1, backgroundColor: "#f8fafc" },
+  containerDark: { backgroundColor: "#0b0b0b" },
   scrollContent: {
     flexGrow: 1,
     paddingTop: 12,
@@ -180,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#d1d5db",
     marginBottom: 14,
     shadowColor: "#0f172a",
     shadowOffset: { width: 0, height: 8 },
@@ -188,36 +201,36 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 2,
   },
-  headerCardDark: { backgroundColor: "#0f172a", borderColor: "#1f2937" },
+  headerCardDark: { backgroundColor: "#141414", borderColor: "#2a2a2a" },
   title: { fontSize: 30, fontWeight: "700", color: "#0f172a" },
-  company: { marginTop: 6, color: "#334155", fontWeight: "600", fontSize: 18 },
-  subLine: { marginTop: 6, color: "#64748b", fontSize: 16 },
+  company: { marginTop: 6, color: "#1f2937", fontWeight: "700", fontSize: 18 },
+  subLine: { marginTop: 6, color: "#4b5563", fontSize: 16 },
   sectionCard: {
     backgroundColor: "#ffffff",
     borderRadius: 18,
     padding: 14,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#d1d5db",
     marginBottom: 12,
   },
-  sectionCardDark: { backgroundColor: "#0f172a", borderColor: "#1f2937" },
+  sectionCardDark: { backgroundColor: "#141414", borderColor: "#2a2a2a" },
   sectionTitle: { fontSize: 18, fontWeight: "700" },
-  sectionBody: { marginTop: 8, color: "#475569", lineHeight: 24, fontSize: 15 },
+  sectionBody: { marginTop: 8, color: "#374151", lineHeight: 24, fontSize: 15 },
   fieldGroup: { marginTop: 12 },
-  label: { color: "#475569", fontWeight: "600", marginBottom: 6 },
+  label: { color: "#1f2937", fontWeight: "700", marginBottom: 6 },
   input: {
     backgroundColor: "#ffffff",
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#9ca3af",
     borderRadius: 14,
     paddingVertical: 12,
     paddingHorizontal: 14,
     color: "#0f172a",
   },
   inputDark: {
-    backgroundColor: "#0b1220",
-    borderColor: "#334155",
-    color: "#e2e8f0",
+    backgroundColor: "#0f0f0f",
+    borderColor: "#3f3f46",
+    color: "#f9fafb",
   },
   textArea: { marginTop: 12 },
   inputMultiline: { height: 140, textAlignVertical: "top" },
@@ -227,26 +240,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 14,
     borderTopWidth: 1,
-    borderTopColor: "#e2e8f0",
+    borderTopColor: "#d1d5db",
     backgroundColor: "#ffffff",
   },
-  stickyBarDark: { backgroundColor: "#0b1220", borderTopColor: "#1f2937" },
+  stickyBarDark: { backgroundColor: "#111111", borderTopColor: "#2a2a2a" },
   secondaryBtn: {
     borderWidth: 1,
-    borderColor: "#14b8a6",
+    borderColor: "#9ca3af",
     paddingVertical: 12,
-    paddingHorizontal: 18,
+    paddingHorizontal: 14,
     borderRadius: 999,
-    backgroundColor: "#ffffff",
-    shadowColor: "#0f172a",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 2,
+    backgroundColor: "#f9fafb",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
-  secondaryText: { color: "#0f766e", fontWeight: "700", fontSize: 17 },
+  secondaryText: { color: "#374151", fontWeight: "700", fontSize: 17 },
+  secondaryTextDark: { color: "#d1d5db" },
   primaryBtn: {
-    backgroundColor: "#0ea5e9",
+    backgroundColor: "#10b981",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 999,
@@ -257,8 +269,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   primaryText: { color: "#ffffff", fontWeight: "700", fontSize: 17 },
-  textLight: { color: "#e2e8f0" },
-  textMutedDark: { color: "#94a3b8" },
+  textLight: { color: "#f9fafb" },
+  textMutedDark: { color: "#9ca3af" },
 });
 
 export default ApplyFormScreen;

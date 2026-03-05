@@ -4,6 +4,7 @@ import { Job } from "../types";
 interface JobContextType {
   savedJobs: Job[];
   saveJob: (job: Job) => void;
+  toggleSaveJob: (job: Job) => void;
   removeJob: (id: string) => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
@@ -25,6 +26,14 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const toggleSaveJob = (job: Job) => {
+    setSavedJobs((prev) => {
+      const exists = prev.some((j) => j.id === job.id);
+      if (exists) return prev.filter((j) => j.id !== job.id);
+      return [...prev, job];
+    });
+  };
+
   const removeJob = (id: string) => {
     setSavedJobs((prev) => prev.filter((job) => job.id !== id));
   };
@@ -33,7 +42,14 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <JobContext.Provider
-      value={{ savedJobs, saveJob, removeJob, isDarkMode, toggleTheme }}
+      value={{
+        savedJobs,
+        saveJob,
+        toggleSaveJob,
+        removeJob,
+        isDarkMode,
+        toggleTheme,
+      }}
     >
       {children}
     </JobContext.Provider>
