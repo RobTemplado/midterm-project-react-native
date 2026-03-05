@@ -463,7 +463,13 @@ const styles = StyleSheet.create({
   tabText: { fontSize: 13, fontWeight: "700", color: "#0f172a" },
   tabTextActive: { color: "#ffffff" },
   sectionTitle: { fontSize: 18, fontWeight: "700" },
-  sectionBody: { marginTop: 8, color: "#374151", lineHeight: 24, fontSize: 15 },
+  sectionBody: {
+    marginTop: 8,
+    color: "#374151",
+    lineHeight: 24,
+    fontSize: 15,
+    textAlign: "justify",
+  },
   detailList: { gap: 6 },
   detailRow: {
     flexDirection: "row",
