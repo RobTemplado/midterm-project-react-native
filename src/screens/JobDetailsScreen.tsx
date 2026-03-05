@@ -94,7 +94,9 @@ const JobDetailsScreen = ({ route, navigation }: any) => {
   const sections = splitSections(job.description);
   const stripEmoji = (value: string) =>
     value.replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu, "").trim();
-  const descriptionText = stripEmoji(sections.description || job.description);
+  const descriptionText = stripEmoji(sections.description || job.description)
+    .replace(/^description\s*[:\-–]*\s*/i, "")
+    .trim();
   const requirementsText = sections.requirements || "Not listed.";
   const benefitsText = sections.benefits || "Not listed.";
 

@@ -89,6 +89,9 @@ const normalizeJob = (job: any): Job => {
     job?.summary ??
     job?.snippet ??
     "No description provided.";
+  const cleanedDescription = stripEmoji(stripHtml(String(rawDescription)))
+    .replace(/^description\s*[:\-–]*\s*/i, "")
+    .trim();
 
   return {
     id: String(job?.id ?? job?.job_id ?? job?.jobId ?? uuid.v4()),
@@ -110,7 +113,7 @@ const normalizeJob = (job: any): Job => {
     currency,
     location: String(locationText),
     locations: locationsArray,
-    description: stripEmoji(stripHtml(String(rawDescription))),
+    description: cleanedDescription,
     tags: Array.isArray(job?.tags) ? job.tags : undefined,
     job_type: job?.jobType ?? job?.job_type,
     work_model: job?.workModel ?? job?.work_model,
@@ -216,9 +219,6 @@ export default function JobFinderScreen({ navigation }: any) {
               {item.company_name}
             </Text>
           </View>
-          <View
-            style={[styles.accentDot, isDarkMode && styles.accentDotDark]}
-          />
         </View>
         <View style={styles.badgeRow}>
           <Text style={[styles.badge, isDarkMode && styles.badgeDark]}>
@@ -532,13 +532,6 @@ const styles = StyleSheet.create({
   logoDark: { backgroundColor: "#1f2937" },
   logoText: { fontWeight: "800", color: "#0f172a" },
   logoTextDark: { color: "#e2e8f0" },
-  accentDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 999,
-    backgroundColor: "#38bdf8",
-  },
-  accentDotDark: { backgroundColor: "#22d3ee" },
   cardTitleWrap: { flex: 1 },
   title: { fontSize: 18, fontWeight: "700", color: "#0f172a" },
   company: { color: "#334155", marginTop: 4, fontWeight: "600" },

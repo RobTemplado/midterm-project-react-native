@@ -73,9 +73,6 @@ export default function SavedJobsScreen({ navigation }: any) {
                   {item.company_name}
                 </Text>
               </View>
-              <View
-                style={[styles.accentDot, isDarkMode && styles.accentDotDark]}
-              />
             </View>
             <View style={styles.badgeRow}>
               <Text style={[styles.badge, isDarkMode && styles.badgeDark]}>
@@ -175,13 +172,6 @@ const styles = StyleSheet.create({
   logoDark: { backgroundColor: "#1f2937" },
   logoText: { fontWeight: "800", color: "#0f172a" },
   logoTextDark: { color: "#e2e8f0" },
-  accentDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 999,
-    backgroundColor: "#38bdf8",
-  },
-  accentDotDark: { backgroundColor: "#22d3ee" },
   cardTitleWrap: { flex: 1 },
   title: { fontSize: 18, fontWeight: "700", color: "#0f172a" },
   company: { color: "#334155", marginTop: 4, fontWeight: "600" },
